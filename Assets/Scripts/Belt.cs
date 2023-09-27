@@ -73,7 +73,7 @@ public class Belt : MonoBehaviour
         //itemsToNextbelt.Clear();
     }
 
-    public bool AddItemToBelt(Item item, float position)
+    public bool AddItemToBelt(ItemGround item, float position)
     {
         
         if (beltItems.Count > 0)
@@ -96,7 +96,7 @@ public class Belt : MonoBehaviour
         return true;
     }
 
-    public bool externalAddItemToBelt(Item item, float position)
+    public bool externalAddItemToBelt(ItemGround item, float position)
     {
         item.transform.position = transform.position + transform.up * -(transform.localScale.x / 2);
         if (beltItems.Count > 0)

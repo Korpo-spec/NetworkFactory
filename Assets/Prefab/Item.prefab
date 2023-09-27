@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6855993297799090234}
   - component: {fileID: 4409594138658161664}
-  - component: {fileID: -4514867771487481093}
   - component: {fileID: 5842911959229359001}
+  - component: {fileID: -4187866719916822495}
   m_Layer: 0
   m_Name: Item
   m_TagString: Untagged
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -86,18 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-4514867771487481093
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2267979368755194302}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c9439b274df1fb46acb6bf66a31d631, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5842911959229359001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,3 +102,15 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &-4187866719916822495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2267979368755194302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a225ce96f8687d2439b10b0cc8de0336, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

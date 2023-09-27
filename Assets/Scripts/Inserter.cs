@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Inserter : NetworkBehaviour
 {
-    [SerializeField] private Item item;
+    [SerializeField] private ItemGround item;
     [SerializeField] private Belt connectedBelt;
     [SerializeField] private bool on;
     private NetworkObject networkObj;
@@ -22,11 +22,30 @@ public class Inserter : NetworkBehaviour
         time += Time.deltaTime;
         if (time > 1f && on)
         {
-            Item instItem = Instantiate(item);
-            instItem.GetComponent<NetworkObject>().Spawn();
-            connectedBelt.externalAddItemToBelt(instItem, 0);
+            AddToBeltServerRpc();
             
             time = 0;
         }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void AddToBeltServerRpc()
+    {
+        ItemGround instItem = Instantiate(item);
+        instItem.GetComponent<NetworkObject>().Spawn();
+        AddToBeltClientRpc(instItem.GetComponent<NetworkObject>().NetworkObjectId);
+        
+    }
+
+    [ClientRpc]
+    private void AddToBeltClientRpc(ulong objectID)
+    {
+        NetworkObject obj = GetNetworkObject(objectID);
+        connectedBelt.externalAddItemToBelt(obj.GetComponent<ItemGround>(), 0);
+    }
+
+    private void RemoveFromBelt()
+    {
+        
     }
 }

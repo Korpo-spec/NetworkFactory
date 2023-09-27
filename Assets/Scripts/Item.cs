@@ -1,20 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Item : NetworkBehaviour
+public class Item : ScriptableObject
 {
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public string name;
+    public int stackSize;
+    public FixedString32Bytes itemID => "baseGame:" + name.Trim();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }

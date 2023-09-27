@@ -6,11 +6,11 @@ namespace DefaultNamespace
     [Serializable]
     public struct BeltItemData
     {
-        public Item item;
+        public ItemGround item;
         public float pos;
         public bool stuck;
 
-        public BeltItemData(Item item, float endTime)
+        public BeltItemData(ItemGround item, float endTime)
         {
             this.item = item;
             this.pos = endTime;

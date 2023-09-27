@@ -197,7 +197,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -779,7 +779,6 @@ MonoBehaviour:
   m_ProtocolType: 0
   m_MaxPacketQueueSize: 128
   m_MaxPayloadSize: 6144
-  m_MaxSendQueueSize: 98304
   m_HeartbeatTimeoutMS: 500
   m_ConnectTimeoutMS: 1000
   m_MaxConnectAttempts: 60
@@ -787,7 +786,7 @@ MonoBehaviour:
   ConnectionData:
     Address: 127.0.0.1
     Port: 7777
-    ServerListenAddress: 
+    ServerListenAddress: 127.0.0.1
   DebugSimulator:
     PacketDelayMS: 0
     PacketJitterMS: 0
@@ -810,17 +809,8 @@ MonoBehaviour:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 1324652080}
     PlayerPrefab: {fileID: 4831523003135103372, guid: 26b86c5631caadf41be00f37b75e1a8e, type: 3}
-    NetworkPrefabs:
-    - Override: 0
-      Prefab: {fileID: 98719374}
-      SourcePrefabToOverride: {fileID: 0}
-      SourceHashToOverride: 0
-      OverridingTargetPrefab: {fileID: 0}
-    - Override: 0
-      Prefab: {fileID: 2267979368755194302, guid: 6104f19b1d13b144b8b933e2dd20fe2a, type: 3}
-      SourcePrefabToOverride: {fileID: 0}
-      SourceHashToOverride: 0
-      OverridingTargetPrefab: {fileID: 0}
+    Prefabs:
+      NetworkPrefabsLists: []
     TickRate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
@@ -836,6 +826,17 @@ MonoBehaviour:
     LoadSceneTimeOut: 120
     SpawnTimeout: 1
     EnableNetworkLogs: 1
+    OldPrefabList:
+    - Override: 0
+      Prefab: {fileID: 98719374}
+      SourcePrefabToOverride: {fileID: 0}
+      SourceHashToOverride: 0
+      OverridingTargetPrefab: {fileID: 0}
+    - Override: 0
+      Prefab: {fileID: 2267979368755194302, guid: 6104f19b1d13b144b8b933e2dd20fe2a, type: 3}
+      SourcePrefabToOverride: {fileID: 0}
+      SourceHashToOverride: 0
+      OverridingTargetPrefab: {fileID: 0}
 --- !u!4 &1324652082
 Transform:
   m_ObjectHideFlags: 0
@@ -916,6 +917,17 @@ PrefabInstance:
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3365618366193444913, guid: b07d36b0a2929114bb60d7d29ff07c60, type: 3}
   m_PrefabInstance: {fileID: 1400672891}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b86ff6fc8f891242a450116821670d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1715144695 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3365618366193444913, guid: b07d36b0a2929114bb60d7d29ff07c60, type: 3}
+  m_PrefabInstance: {fileID: 500166307}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -1043,7 +1055,7 @@ PrefabInstance:
     - target: {fileID: 3365618366193444913, guid: b07d36b0a2929114bb60d7d29ff07c60, type: 3}
       propertyPath: connectedBelt
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1715144695}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b07d36b0a2929114bb60d7d29ff07c60, type: 3}
 --- !u!114 &957818579319908114 stripped
