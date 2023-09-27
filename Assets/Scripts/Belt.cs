@@ -13,7 +13,7 @@ public class Belt : MonoBehaviour
 
     private Vector3 startPos;
 
-    private Vector3 direction;
+    public Vector3 direction;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,7 +36,7 @@ public class Belt : MonoBehaviour
             //Debug.Log(timeDif);
             if (timeDif > 1f)
             {
-                Debug.Log("Diff", item.item);
+                //Debug.Log("Diff", item.item);
                 if (!connectedBelt)
                 {
                     continue;
@@ -44,7 +44,7 @@ public class Belt : MonoBehaviour
                 bool space = connectedBelt.AddItemToBelt(item.item, timeDif - 1.0f);
                 if (space)
                 {
-                    Debug.Log("moved Item to next belt");
+                    //Debug.Log("moved Item to next belt");
                     beltItems.Remove(item);
                     i--;
                 }
@@ -55,7 +55,7 @@ public class Belt : MonoBehaviour
 
             if (i > 0 && (beltItems[i-1].item.transform.position - item.item.transform.position).sqrMagnitude < 1.1f)
             {
-                Debug.Log("Stuck", item.item);
+                //Debug.Log("Stuck", item.item);
                 item.item.transform.position = beltItems[i - 1].item.transform.position - direction.normalized;
                 float thingy = item.pos - TickClock.instance.clock;
                 item.pos = TickClock.instance.clock + thingy;
@@ -89,7 +89,7 @@ public class Belt : MonoBehaviour
         {
             return false;
         }
-        Debug.Log("AddITEM");
+        //Debug.Log("AddITEM");
         item.transform.position = transform.position + transform.up * -(transform.localScale.x / 2);
         float endTime = TickClock.instance.clock + 2.0f;
         beltItems.Add(new BeltItemData(item, endTime));
@@ -98,7 +98,7 @@ public class Belt : MonoBehaviour
 
     public bool externalAddItemToBelt(ItemGround item, float position)
     {
-        item.transform.position = transform.position + transform.up * -(transform.localScale.x / 2);
+        item.transform.position = (transform.position + transform.up * -(transform.localScale.x / 2)) + (direction*position);
         if (beltItems.Count > 0)
         {
             if ((beltItems[beltItems.Count-1].item.transform.position - item.transform.position).sqrMagnitude < 1.0f)
@@ -107,9 +107,9 @@ public class Belt : MonoBehaviour
                 return false;
             }
         }
-        Debug.Log("AddITEM");
+        //Debug.Log("AddITEM");
         item.transform.position = transform.position + transform.up * -(transform.localScale.x / 2);
-        float endTime = TickClock.instance.clock + 2.0f- position;
+        float endTime = TickClock.instance.clock + 2.0f- position* 2.0f;
         beltItems.Add(new BeltItemData(item, endTime));
         return true;
         

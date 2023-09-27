@@ -154,7 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7d12861b2a32774eb066a84441d41fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: -4514867771487481093, guid: 6104f19b1d13b144b8b933e2dd20fe2a, type: 3}
+  item: {fileID: -4187866719916822495, guid: 6104f19b1d13b144b8b933e2dd20fe2a, type: 3}
   connectedBelt: {fileID: 1400672892}
   on: 0
 --- !u!212 &98719376
@@ -222,7 +222,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &98719378
 MonoBehaviour:
@@ -325,7 +325,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 957818578562731688, guid: b07d36b0a2929114bb60d7d29ff07c60, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 957818578562731688, guid: b07d36b0a2929114bb60d7d29ff07c60, type: 3}
       propertyPath: m_LocalPosition.x
@@ -810,7 +810,8 @@ MonoBehaviour:
     NetworkTransport: {fileID: 1324652080}
     PlayerPrefab: {fileID: 4831523003135103372, guid: 26b86c5631caadf41be00f37b75e1a8e, type: 3}
     Prefabs:
-      NetworkPrefabsLists: []
+      NetworkPrefabsLists:
+      - {fileID: 11400000, guid: edf987ac4a0a6b046bbf8733a0c0d65e, type: 2}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
@@ -826,17 +827,7 @@ MonoBehaviour:
     LoadSceneTimeOut: 120
     SpawnTimeout: 1
     EnableNetworkLogs: 1
-    OldPrefabList:
-    - Override: 0
-      Prefab: {fileID: 98719374}
-      SourcePrefabToOverride: {fileID: 0}
-      SourceHashToOverride: 0
-      OverridingTargetPrefab: {fileID: 0}
-    - Override: 0
-      Prefab: {fileID: 2267979368755194302, guid: 6104f19b1d13b144b8b933e2dd20fe2a, type: 3}
-      SourcePrefabToOverride: {fileID: 0}
-      SourceHashToOverride: 0
-      OverridingTargetPrefab: {fileID: 0}
+    OldPrefabList: []
 --- !u!4 &1324652082
 Transform:
   m_ObjectHideFlags: 0
