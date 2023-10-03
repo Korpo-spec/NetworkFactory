@@ -1,23 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using DefaultNamespace;
+using Unity.Netcode;
 using UnityEngine;
 
-public class Belt : MonoBehaviour
+public class Belt : Building
 {
     [SerializeField] private Belt connectedBelt;
 
-    [SerializeField]private List<BeltItemData> beltItems;
+    private List<BeltItemData> beltItems;
 
-    private Queue<(Item item, float pos)> itemsToNextbelt;
+   
 
     private Vector3 startPos;
 
     public Vector3 direction;
+
+    
+    public override Vector2 size => Vector2.one;
+    public override NetworkObject NetworkObject => GetComponent<NetworkObject>();
+
+    
     // Start is called before the first frame update
     void Start()
     {
-        itemsToNextbelt = new Queue<(Item item, float pos)>();
+        
         beltItems = new List<BeltItemData>();
         startPos = transform.position + transform.up * -(transform.localScale.x / 2);
         direction = transform.up * (transform.localScale.x);
@@ -27,7 +34,6 @@ public class Belt : MonoBehaviour
     void Update()
     {
         for (int i = 0; i < beltItems.Count; i++)
-
         {
             var item = beltItems[i];
             float timeDif = (item.pos-TickClock.instance.clock) / 2.0f;
@@ -114,4 +120,6 @@ public class Belt : MonoBehaviour
         return true;
         
     }
+
+    
 }
