@@ -7,6 +7,12 @@ using UnityEngine;
 public class Belt : Building
 {
     [SerializeField] private Belt connectedBelt;
+    
+    [SerializeField] private List<Transform> beltPoints = new List<Transform>();
+
+    private int beltPointIndex = 0;
+
+    private int beltPointAmount = 0;
 
     private List<BeltItemData> beltItems;
 
@@ -27,21 +33,26 @@ public class Belt : Building
         
         beltItems = new List<BeltItemData>();
         startPos = transform.position + transform.up * -(transform.localScale.x / 2);
-        direction = transform.up * (transform.localScale.x);
+        direction = transform.up ;
+        beltPointAmount = beltPoints.Count - 1;
     }
 
     // Update is called once per frame
     void Update()
     {
+        float prevTimeDif = 0;
         for (int i = 0; i < beltItems.Count; i++)
         {
             var item = beltItems[i];
             float timeDif = (item.pos-TickClock.instance.clock) / 2.0f;
             timeDif -= 1f;
             timeDif *= -1f;
+
+            timeDif = Mathf.Min(timeDif, 1.0001f);
             //Debug.Log(timeDif);
             if (timeDif > 1f)
             {
+                prevTimeDif = timeDif;
                 //Debug.Log("Diff", item.item);
                 if (!connectedBelt)
                 {
@@ -59,19 +70,30 @@ public class Belt : Building
 
             
 
-            if (i > 0 && (beltItems[i-1].item.transform.position - item.item.transform.position).sqrMagnitude < 1.1f)
+            if (i > 0 && (prevTimeDif - timeDif) < 0.25f)
             {
-                //Debug.Log("Stuck", item.item);
-                item.item.transform.position = beltItems[i - 1].item.transform.position - direction.normalized;
-                float thingy = item.pos - TickClock.instance.clock;
-                item.pos = TickClock.instance.clock + thingy;
+                //Debug.Log("Stuck " + prevTimeDif + " " + timeDif, item.item);
+                //item.item.transform.position = beltItems[i - 1].item.transform.position - direction.normalized;
+                //float thingy = item.pos - TickClock.instance.clock;
+                //Debug.Log(item.pos);
+                beltItems[i] = new BeltItemData(item.item, item.pos + (0.25f-(prevTimeDif - timeDif)));
+                //Debug.Log(item.pos);
+            }
+
+
+            if (timeDif * beltPointAmount > 1.0f)
+            {
+                beltPointIndex = 1;
             }
             else
             {
-                item.item.transform.position = startPos + (direction * timeDif);
+                beltPointIndex = 0;
             }
+            item.item.transform.position = Vector3.Lerp(beltPoints[beltPointIndex].position, beltPoints[beltPointIndex+1].position, (timeDif*beltPointAmount)%1);
+
+            prevTimeDif = timeDif;
             
-            
+
             //item.item.transform.position = startPos + (direction * timeDif);
         }
         
@@ -84,7 +106,7 @@ public class Belt : Building
         
         if (beltItems.Count > 0)
         {
-            if ((beltItems[beltItems.Count-1].item.transform.position - item.transform.position).sqrMagnitude < 1.1f)
+            if ((beltItems[beltItems.Count-1].item.transform.position - item.transform.position).sqrMagnitude < 0.25f)
             {
                 Debug.Log("Tooclose");
                 return false;
@@ -107,7 +129,7 @@ public class Belt : Building
         item.transform.position = (transform.position + transform.up * -(transform.localScale.x / 2)) + (direction*position);
         if (beltItems.Count > 0)
         {
-            if ((beltItems[beltItems.Count-1].item.transform.position - item.transform.position).sqrMagnitude < 1.0f)
+            if ((beltItems[beltItems.Count-1].item.transform.position - item.transform.position).sqrMagnitude < 0.25f)
             {
                 Debug.Log("Tooclose");
                 return false;
@@ -121,5 +143,33 @@ public class Belt : Building
         
     }
 
-    
+    public override void OnPlace(Map map, Vector2 pos)
+    {
+        var g = (map.map.GetValue(pos + (Vector2) transform.up));
+        if (g)
+        {
+            if (g.TryGetComponent<Belt>(out Belt belt))
+            {
+                connectedBelt = belt;
+            }
+        }
+
+        g = map.map.GetValue(pos + (Vector2) transform.up * -1);
+        if (g)
+        {
+            if (g.TryGetComponent<Belt>(out Belt belt))
+            {
+               belt.connectedBelt = this;
+            }
+        }
+        
+        
+        
+        
+    }
+
+    public override Building OnPlaceServerSide(Map map, Vector2 pos)
+    {
+        return this;
+    }
 }

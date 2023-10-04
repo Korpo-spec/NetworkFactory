@@ -37,6 +37,10 @@ public class PlayerBuild : NetworkBehaviour
 
         if (buildingGhostRenderer)
         {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                buildingGhostRenderer.transform.Rotate(new Vector3(0,0,90));
+            }
             Vector2 vec = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             vec = vec.FloorToInt();
             vec.x += buildingToPlaceIbuilding.size.x / 2;
@@ -46,7 +50,7 @@ public class PlayerBuild : NetworkBehaviour
             buildingGhostRenderer.color = placeable ? Color.white : Color.red;
             if (Input.GetMouseButtonDown(0) && placeable)
             {
-                mapObj.Place(buildingToPlace.GetComponent<Building>(), mapObj.CameraRaycastVec2(Camera.main));
+                mapObj.Place(buildingToPlace.GetComponent<Building>(), mapObj.CameraRaycastVec2(Camera.main), buildingGhostRenderer.transform.rotation);
             }
         }
         

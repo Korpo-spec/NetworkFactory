@@ -12,7 +12,13 @@ namespace DefaultNamespace
 
         public FixedString32Bytes buildingID;
 
-        public virtual void OnPlace()
+        public bool rotatable = false;
+
+        public virtual Building OnPlaceServerSide(Map map, Vector2 pos)
+        {
+            return this;
+        }
+        public virtual void OnPlace(Map map, Vector2 pos)
         {
             
         }

@@ -8,12 +8,15 @@ using UnityEngine;
 public class Map : NetworkBehaviour
 {
     [SerializeField] private ItemDictionary itemDictionary;
-    private Grid<Building> map;
+    public Grid<Building> map;
+
+    public static Map mapObject;
     // Start is called before the first frame update
     void Start()
     {
         itemDictionary.AddListToDictionary();
         map = new Grid<Building>(50, 50, 1f, new Vector3(-25, -25, 0), Vector3.forward, null);
+        mapObject = this;
     }
 
     // Update is called once per frame
@@ -61,25 +64,26 @@ public class Map : NetworkBehaviour
         return true;
     }
 
-    public void Place(Building building, Vector2 pos)
+    public void Place(Building building, Vector2 pos, Quaternion rotation)
+    {
+        SpawnBuildingServerRpc(building.buildingID, pos, rotation);
+    }
+
+    public void ReplaceBuilding(Building building, Vector2 pos, Quaternion rotation)
     {
         
-
-        
-        
-        
-        SpawnBuildingServerRpc(building.buildingID, pos);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void SpawnBuildingServerRpc(FixedString32Bytes spawn, Vector2 pos)
+    private void SpawnBuildingServerRpc(FixedString32Bytes spawn, Vector2 pos, Quaternion rotation)
     {
         Building building = itemDictionary.Items[spawn].building;
         pos = pos.FloorToInt();
         pos.x += building.size.x / 2;
         pos.y += building.size.y / 2;
-        GameObject g = Instantiate(building.gameObject, pos, Quaternion.identity);
+        GameObject g = Instantiate(building.gameObject, pos, rotation);
         building = g.GetComponent<Building>();
+        building = building.OnPlaceServerSide(this, pos);
         building.NetworkObject.Spawn();
         SpawnBuildingClientRpc(building.NetworkObject.NetworkObjectId, pos);
     }
@@ -87,12 +91,13 @@ public class Map : NetworkBehaviour
     [ClientRpc]
     private void SpawnBuildingClientRpc(ulong objectID, Vector2 pos)
     {
+        Vector2 pos2 =  pos + new Vector2(25, 25);
         Building building = GetNetworkObject(objectID).GetComponent<Building>();
         for (int i = 0; i < building.size.x; i++)
         {
             for (int j = 0; j < building.size.y; j++)
             {
-                Vector2 pos2 = pos + new Vector2(25, 25);
+                pos2 = pos + new Vector2(25, 25);
                 pos2.x += i;
                 pos2.y += j;
                 map.SetValue(pos2, building);
@@ -102,8 +107,10 @@ public class Map : NetworkBehaviour
         
         
         
-        building.OnPlace();
+        building.OnPlace(this, pos2);
     }
+    
+    
     
     
 }

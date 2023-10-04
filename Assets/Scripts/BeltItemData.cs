@@ -8,13 +8,13 @@ namespace DefaultNamespace
     {
         public ItemGround item;
         public float pos;
-        public bool stuck;
+        public int beltPointIndex;
 
         public BeltItemData(ItemGround item, float endTime)
         {
             this.item = item;
             this.pos = endTime;
-            stuck = false;
+            beltPointIndex = 0;
         }
     }
 }
