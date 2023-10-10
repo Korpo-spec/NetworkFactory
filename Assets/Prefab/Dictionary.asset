@@ -15,4 +15,6 @@ MonoBehaviour:
   itemNoDictionary:
   - {fileID: 11400000, guid: 9ee66fcb340d94042ac12de0dec31fd1, type: 2}
   - {fileID: 11400000, guid: a96fb8b29c6140449b75eb336248f74f, type: 2}
+  - {fileID: 11400000, guid: c71ce4c0aa0001e43ba374cb95682cc6, type: 2}
+  - {fileID: 11400000, guid: d15d3b0b1a4a74242866826944c11032, type: 2}
   update: 0

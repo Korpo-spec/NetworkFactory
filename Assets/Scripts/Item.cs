@@ -11,6 +11,7 @@ public class Item : ScriptableObject
 {
     public string name;
     public int stackSize;
+    public Sprite icon;
     public FixedString32Bytes itemID => "baseGame:" + name.Trim().Replace(' ', '_');
 
     public Building building;

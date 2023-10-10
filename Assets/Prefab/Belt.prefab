@@ -155,22 +155,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildingID:
-    utf8LengthInBytes: 0
+    utf8LengthInBytes: 13
     bytes:
       offset0000:
-        byte0000: 0
-        byte0001: 0
-        byte0002: 0
-        byte0003: 0
-        byte0004: 0
-        byte0005: 0
-        byte0006: 0
-        byte0007: 0
-        byte0008: 0
-        byte0009: 0
-        byte0010: 0
-        byte0011: 0
-        byte0012: 0
+        byte0000: 98
+        byte0001: 97
+        byte0002: 115
+        byte0003: 101
+        byte0004: 71
+        byte0005: 97
+        byte0006: 109
+        byte0007: 101
+        byte0008: 58
+        byte0009: 66
+        byte0010: 101
+        byte0011: 108
+        byte0012: 116
         byte0013: 0
         byte0014: 0
         byte0015: 0
@@ -188,10 +188,13 @@ MonoBehaviour:
       byte0027: 0
       byte0028: 0
       byte0029: 0
+  rotatable: 0
   connectedBelt: {fileID: 0}
   beltPoints:
   - {fileID: 4019568312533976524}
   - {fileID: 4456304181972636601}
+  beltVariation: {fileID: 3365618366193444913, guid: 6e70a2d3ac314cb4aadc99259616bfcb, type: 3}
+  originalBelt: {fileID: 3365618366193444913}
   direction: {x: 0, y: 0, z: 0}
 --- !u!61 &1634430438243653005
 BoxCollider2D:

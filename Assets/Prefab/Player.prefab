@@ -128,5 +128,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapObj: {fileID: 0}
-  buildingToPlace: {fileID: 957818578562731687, guid: b07d36b0a2929114bb60d7d29ff07c60, type: 3}
+  buildingToPlace: {fileID: 0}
   buildingGhost: {fileID: 3082310451917972121, guid: 65a65f314d4507f4e89afeb9630d6855, type: 3}
+  hotbarUI: {fileID: 0}

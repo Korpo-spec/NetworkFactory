@@ -2,11 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class ItemGround : NetworkBehaviour
 {
-    [SerializeField]private Item item;
-    
+    [SerializeField]public Item item 
+    {
+        get => intItem;
+        set
+        {
+            SetSprite(value);
+            intItem = value;
+        }
+        
+    }
+
+    private Item intItem;
     // Start is called before the first frame update
     void Start()
     {
@@ -48,6 +59,11 @@ public class ItemGround : NetworkBehaviour
     {
         Debug.Log("Sync");
         joinThing = true;
+    }
+
+    private void SetSprite(Item item)
+    {
+        GetComponent<SpriteRenderer>().sprite = item.icon;
     }
 
     // Update is called once per frame

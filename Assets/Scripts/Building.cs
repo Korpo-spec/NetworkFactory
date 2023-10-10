@@ -6,15 +6,15 @@ namespace DefaultNamespace
 {
     public class Building : NetworkBehaviour
     {
-        public virtual Vector2 size { get; }
-        
-        public virtual NetworkObject NetworkObject { get; }
+        public virtual Vector2 size => Vector2.one;
+
+        public virtual NetworkObject NetworkObject => GetComponent<NetworkObject>();
 
         public FixedString32Bytes buildingID;
 
         public bool rotatable = false;
 
-        public virtual Building OnPlaceServerSide(Map map, Vector2 pos)
+        public virtual Building OnPlaceServerSide(Map map, Vector2 pos, Quaternion rot)
         {
             return this;
         }

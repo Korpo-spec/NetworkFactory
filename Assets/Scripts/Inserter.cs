@@ -1,15 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using DefaultNamespace;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Inserter : NetworkBehaviour
+public class Inserter : Building
 {
     [SerializeField] private ItemGround item;
     [SerializeField] private Belt connectedBelt;
     [SerializeField] private bool on;
+    public override NetworkObject NetworkObject => GetComponent<NetworkObject>();
     private NetworkObject networkObj;
-    private float time = 0;
+    
+
+    private BeltItemData currentItem;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,13 +23,43 @@ public class Inserter : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        time += Time.deltaTime;
-        if (time > 1f && on)
+        
+
+        if ( IsHost &&!item&& input != null )
         {
-            AddToBeltServerRpc();
             
-            time = 0;
+            int amount = 1;
+            
+            Item itemObj = input.GetItem(ref amount);
+            if (!itemObj)
+            {
+                return;
+            }
+            Debug.Log("Instatiate");
+            item = Instantiate(IInserterInteract.itemGround, transform.position - transform.right/2, Quaternion.identity);
+            item.item = itemObj;
+            item.GetComponent<NetworkObject>().Spawn();
+            
+            SendInserterDataClientRpc(item.GetComponent<NetworkObject>().NetworkObjectId, TickClock.instance.clock + 1.0f);
+            
         }
+        
+
+        if(!item) return;
+        item.transform.position = Vector3.Lerp(transform.position + transform.right / 2,transform.position - transform.right / 2, TickClock.instance.TimeLeft(currentItem.pos, 1));
+        if (TickClock.instance.TimeLeft(currentItem.pos,1 ) > 1.0f)
+        {
+            currentItem = default;
+            output.AddItem(item, 1);
+            item = null;
+        }
+    }
+
+    [ClientRpc]
+    private void SendInserterDataClientRpc(ulong networkID, float timePos)
+    {
+        item = GetNetworkObject(networkID).GetComponent<ItemGround>();
+        currentItem = new BeltItemData(item, timePos);
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -46,6 +80,32 @@ public class Inserter : NetworkBehaviour
 
     private void RemoveFromBelt()
     {
+        
+    }
+
+    
+    private IInserterInteract input;
+    private IInserterInteract output;
+
+    public override void OnPlace(Map map, Vector2 pos)
+    {
+        var g = map.map.GetValue(pos + (Vector2) transform.right);
+        
+        var g2 = map.map.GetValue(pos + (Vector2) transform.right * -1);
+
+        var interact = g as IInserterInteract;
+        if (interact != null)
+        {
+            Debug.Log(interact);
+            input = interact;
+        }
+        
+        interact = g2 as IInserterInteract;
+        if (interact != null)
+        {
+            Debug.Log(interact);
+            output = interact;
+        }
         
     }
 }

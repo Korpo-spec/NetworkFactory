@@ -8,26 +8,70 @@ public class PlayerBuild : NetworkBehaviour
 {
     [SerializeField] private Map mapObj;
 
-    [SerializeField] private GameObject buildingToPlace;
+    [SerializeField] private Building buildingToPlace;
 
-    private Building buildingToPlaceIbuilding;
+    
 
     [SerializeField] private GameObject buildingGhost;
 
+    [SerializeField]
+    private InventoryHotbarUI hotbarUI;
+
     private SpriteRenderer buildingGhostRenderer;
+
+
+    private KeyCode[] keyCodes = new KeyCode[]
+    {
+        KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, KeyCode.Alpha5, KeyCode.Alpha6,
+        KeyCode.Alpha7, KeyCode.Alpha8
+    };
     
     // Start is called before the first frame update
     void Start()
     {
+        hotbarUI = FindObjectOfType<InventoryHotbarUI>();
         mapObj = FindObjectOfType<Map>();
-        buildingToPlaceIbuilding = buildingToPlace.GetComponent<Building>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if (!IsOwner)
         {
+            return;
+        }
+
+        for (int i = 0; i < keyCodes.Length; i++)
+        {
+            if (Input.GetKeyDown((keyCodes[i])))
+            {
+                Item item = hotbarUI.GetHotbarItem(i);
+                if (item && item.building)
+                {
+                    buildingToPlace = item.building;
+                    if (buildingGhostRenderer)
+                    {
+                        buildingGhostRenderer.sprite = buildingToPlace.GetComponent<SpriteRenderer>().sprite;
+                    }
+                    
+                }
+                else
+                {
+                    buildingToPlace = null;
+                }
+                    
+            }
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.A) && buildingToPlace)
+        {
+            if (buildingGhostRenderer)
+            {
+                Destroy(buildingGhostRenderer);
+                return;
+            }
             Debug.Log("spawn");
             
             buildingGhostRenderer = Instantiate(buildingGhost).GetComponent<SpriteRenderer>();
@@ -43,10 +87,10 @@ public class PlayerBuild : NetworkBehaviour
             }
             Vector2 vec = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             vec = vec.FloorToInt();
-            vec.x += buildingToPlaceIbuilding.size.x / 2;
-            vec.y += buildingToPlaceIbuilding.size.y / 2;
+            vec.x += buildingToPlace.size.x / 2;
+            vec.y += buildingToPlace.size.y / 2;
             buildingGhostRenderer.transform.position = vec;
-            bool placeable = mapObj.CheckIfPossiblePlacement(buildingToPlaceIbuilding, vec);
+            bool placeable = mapObj.CheckIfPossiblePlacement(buildingToPlace, vec);
             buildingGhostRenderer.color = placeable ? Color.white : Color.red;
             if (Input.GetMouseButtonDown(0) && placeable)
             {

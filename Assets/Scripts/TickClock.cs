@@ -25,7 +25,7 @@ public class TickClock : NetworkBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (IsHost)
         {
@@ -35,6 +35,15 @@ public class TickClock : NetworkBehaviour
         {
             clock += Time.deltaTime;
         }
+    }
+
+    public float TimeLeft(float endtime, float time)
+    {
+        float timeDif = (endtime-clock) / time;
+        timeDif -= 1f;
+        timeDif *= -1f;
+
+        return timeDif;
     }
     [ServerRpc(RequireOwnership = false)]
     private void SyncClockServerRpc(ulong syncClient)

@@ -8,12 +8,14 @@ using UnityEngine;
 public class Map : NetworkBehaviour
 {
     [SerializeField] private ItemDictionary itemDictionary;
+    [SerializeField] private ItemGround groundItem;
     public Grid<Building> map;
 
     public static Map mapObject;
     // Start is called before the first frame update
     void Start()
     {
+        IInserterInteract.itemGround = groundItem;
         itemDictionary.AddListToDictionary();
         map = new Grid<Building>(50, 50, 1f, new Vector3(-25, -25, 0), Vector3.forward, null);
         mapObject = this;
@@ -71,7 +73,9 @@ public class Map : NetworkBehaviour
 
     public void ReplaceBuilding(Building building, Vector2 pos, Quaternion rotation)
     {
-        
+        Debug.Log("Replacing");
+        DespawnBuildingServerRpc(pos);
+        SpawnBuildingServerRpc(building.buildingID, pos, rotation);
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -83,9 +87,17 @@ public class Map : NetworkBehaviour
         pos.y += building.size.y / 2;
         GameObject g = Instantiate(building.gameObject, pos, rotation);
         building = g.GetComponent<Building>();
-        building = building.OnPlaceServerSide(this, pos);
+        building = building.OnPlaceServerSide(this, pos + new Vector2(25,25), rotation);
         building.NetworkObject.Spawn();
         SpawnBuildingClientRpc(building.NetworkObject.NetworkObjectId, pos);
+    }
+    
+    [ServerRpc(RequireOwnership = false)]
+    private void DespawnBuildingServerRpc(Vector2 pos)
+    {
+        pos = pos + new Vector2(25, 25);
+        Building building = map.GetValue(pos);
+        building.NetworkObject.Despawn();
     }
 
     [ClientRpc]
