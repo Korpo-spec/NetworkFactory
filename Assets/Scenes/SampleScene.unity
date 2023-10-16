@@ -875,6 +875,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hotbar
       objectReference: {fileID: 0}
+    - target: {fileID: 4521455560551157069, guid: 6fb2d0058c722be40a559b0c6da5dbab, type: 3}
+      propertyPath: hotbarItem
+      value: 
+      objectReference: {fileID: 11400000, guid: a96fb8b29c6140449b75eb336248f74f, type: 2}
     - target: {fileID: 6036570670714845685, guid: 6fb2d0058c722be40a559b0c6da5dbab, type: 3}
       propertyPath: hotbarItem
       value: 

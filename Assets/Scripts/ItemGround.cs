@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -11,8 +12,7 @@ public class ItemGround : NetworkBehaviour
         get => intItem;
         set
         {
-            SetSprite(value);
-            intItem = value;
+            SetItem(value.itemID);
         }
         
     }
@@ -59,6 +59,21 @@ public class ItemGround : NetworkBehaviour
     {
         Debug.Log("Sync");
         joinThing = true;
+    }
+
+    private void SetItem(FixedString32Bytes itemID)
+    {
+        SetItemClientRpc(itemID);
+    }
+
+    [ClientRpc]
+    private void SetItemClientRpc(FixedString32Bytes itemID)
+    {
+        //Debug.Log("Sent sprite Data");
+        var itemForSprite = Instantiate(ItemDictionary.Items[itemID]);
+        SetSprite(itemForSprite);
+        intItem = itemForSprite;
+        intItem.itemVisualizer = this;
     }
 
     private void SetSprite(Item item)

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DefaultNamespace;
 using Unity.Netcode;
 using UnityEngine;
@@ -63,7 +64,14 @@ public class Belt : Building, IInserterInteract
         float prevTimeDif = 0;
         for (int i = 0; i < beltItems.Count; i++)
         {
+            
             var item = beltItems[i];
+            if (!item.item)
+            {
+                beltItems.RemoveAt(i);
+                i--;
+                continue;
+            }
             float timeDif = (item.pos-TickClock.instance.clock) / 2.0f;
             timeDif -= 1f;
             timeDif *= -1f;
@@ -128,7 +136,7 @@ public class Belt : Building, IInserterInteract
         
         if (beltItems.Count > 0)
         {
-            if ((beltItems[beltItems.Count-1].item.transform.position - item.transform.position).sqrMagnitude < 0.125f)
+            if ((beltItems[beltItems.Count-1].item.transform.position - item.transform.position).sqrMagnitude < 0.125f*0.125f)
             {
                 //Debug.Log("Tooclose");
                 return false;
@@ -260,11 +268,52 @@ public class Belt : Building, IInserterInteract
         return false;
     }
 
-    public Item GetItem(ref int amount)
+    public Item GetItem(ref int amount, List<Item> neededItems)
     {
-        throw new NotImplementedException();
-    }
+        if (beltItems.Count < 1)
+        {
+            return null;
+        }
+        BeltItemData closestItem = new BeltItemData(null, 1);
+        int index = 0;
+        for (int i = 0; i < beltItems.Count; i++)
+        {
+            var item = beltItems[i];
+            float timeDif = (item.pos-TickClock.instance.clock) / 2.0f;
+            timeDif -= 1f;
+            timeDif *= -1f;
+            timeDif = Mathf.Min(timeDif, 1.0001f);
 
+            float closestValue = Mathf.Abs(timeDif - 0.5f);
+            Debug.Log(closestValue);
+            if (closestItem.pos > closestValue)
+            {
+                if (neededItems ==null)
+                {
+                    closestItem = new BeltItemData(item.item, closestValue);
+                }
+                else
+                {
+                    for (int j = 0; j < neededItems.Count; j++)
+                    {
+                        if (item.item.item.itemID == neededItems[j].itemID)
+                        {
+                            closestItem = new BeltItemData(item.item, closestValue);
+                        }
+                    }
+                }
+                
+                
+                index = i;
+            }
+        }
+
+        beltItems.RemoveAt(index);
+        return closestItem.item.item;
+    }
+    
+
+    public bool wantItemGround => true;
     public bool AddItem(ItemGround item, int amount)
     {
         return AddItemToBelt(item, 0.5f);

@@ -98,6 +98,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02ba307f13fb09646a74657511f4224d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildingID:
+    utf8LengthInBytes: 16
+    bytes:
+      offset0000:
+        byte0000: 98
+        byte0001: 97
+        byte0002: 115
+        byte0003: 101
+        byte0004: 71
+        byte0005: 97
+        byte0006: 109
+        byte0007: 101
+        byte0008: 58
+        byte0009: 70
+        byte0010: 117
+        byte0011: 114
+        byte0012: 110
+        byte0013: 97
+        byte0014: 99
+        byte0015: 101
+      byte0016: 0
+      byte0017: 0
+      byte0018: 0
+      byte0019: 0
+      byte0020: 0
+      byte0021: 0
+      byte0022: 0
+      byte0023: 0
+      byte0024: 0
+      byte0025: 0
+      byte0026: 0
+      byte0027: 0
+      byte0028: 0
+      byte0029: 0
+  rotatable: 0
+  recipe: {fileID: 11400000, guid: aecd1ce6754a54b4c91b38cb63e3208d, type: 2}
 --- !u!114 &5452439637054275028
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -29,18 +29,30 @@ public class Inserter : Building
         {
             
             int amount = 1;
+            List<Item> items =  output.GetNeededItems();
             
-            Item itemObj = input.GetItem(ref amount);
+            Item itemObj = input.GetItem(ref amount, items);
             if (!itemObj)
             {
                 return;
             }
-            Debug.Log("Instatiate");
-            item = Instantiate(IInserterInteract.itemGround, transform.position - transform.right/2, Quaternion.identity);
-            item.item = itemObj;
-            item.GetComponent<NetworkObject>().Spawn();
+            if (itemObj.itemVisualizer)
+            {
+                item = itemObj.itemVisualizer;
+                
+                SendInserterDataClientRpc(item.GetComponent<NetworkObject>().NetworkObjectId, TickClock.instance.clock + 1.0f);
+            }
+            else
+            {
+                Debug.Log("Instatiate");
+                item = Instantiate(IInserterInteract.itemGround, transform.position - transform.right/2, Quaternion.identity);
+                
+                item.GetComponent<NetworkObject>().Spawn();
+                item.item = itemObj;
             
-            SendInserterDataClientRpc(item.GetComponent<NetworkObject>().NetworkObjectId, TickClock.instance.clock + 1.0f);
+                SendInserterDataClientRpc(item.GetComponent<NetworkObject>().NetworkObjectId, TickClock.instance.clock + 1.0f);
+
+            }
             
         }
         
@@ -49,16 +61,32 @@ public class Inserter : Building
         item.transform.position = Vector3.Lerp(transform.position + transform.right / 2,transform.position - transform.right / 2, TickClock.instance.TimeLeft(currentItem.pos, 1));
         if (TickClock.instance.TimeLeft(currentItem.pos,1 ) > 1.0f)
         {
-            currentItem = default;
-            output.AddItem(item, 1);
-            item = null;
+            if (!output.wantItemGround && IsHost)
+            {
+                if (!output.AddItem(item.item, 1)) return;
+                item.NetworkObject.Despawn();
+                currentItem = default;
+            
+                item = null;
+            }
+            else if (output.wantItemGround)
+            {
+                if (!output.AddItem(item, 1)) return;
+                currentItem = default;
+            
+                item = null;
+            }
+            
+            
         }
     }
 
     [ClientRpc]
     private void SendInserterDataClientRpc(ulong networkID, float timePos)
     {
+        
         item = GetNetworkObject(networkID).GetComponent<ItemGround>();
+        item.transform.position = transform.position - transform.right / 2;
         currentItem = new BeltItemData(item, timePos);
     }
 

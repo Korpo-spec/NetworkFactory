@@ -24,7 +24,7 @@ public class Chest : Building, IInserterInteract
         
     }
 
-    public Item GetItem(ref int amount)
+    public Item GetItem(ref int amount, List<Item> neededItems)
     {
         amount = 1;
         return amountInChest-- > 0 ? Instantiate(itemInChest) : null;

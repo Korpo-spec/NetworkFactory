@@ -11,7 +11,7 @@ public class ItemDictionary : ScriptableObject
 
     [SerializeField] private List<Item> itemNoDictionary;
 
-    public Dictionary<FixedString32Bytes, Item> Items = new Dictionary<FixedString32Bytes, Item>();
+    public static Dictionary<FixedString32Bytes, Item> Items = new Dictionary<FixedString32Bytes, Item>();
     [SerializeField] private bool update;
 
     public void AddListToDictionary()

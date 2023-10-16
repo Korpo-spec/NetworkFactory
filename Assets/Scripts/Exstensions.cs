@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 
 public static class Exstentions 
@@ -26,6 +27,24 @@ public static class Exstentions
     public static T GetRandom<T>(this List<T> list)
     {
         return list[Random.Range(0, list.Count)];
+    }
+
+    public static bool IsCommonItem(this List<Item> items, FixedString32Bytes ID)
+    {
+        if (items == null || items.Count < 1)
+        {
+            return true;
+        }
+        for (int i = 0; i < items.Count; i++)
+        {
+            var item = items[i];
+            if (item.itemID == ID)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     

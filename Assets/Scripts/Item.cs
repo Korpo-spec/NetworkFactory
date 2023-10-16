@@ -16,6 +16,8 @@ public class Item : ScriptableObject
 
     public Building building;
 
+    [NonSerialized]public ItemGround itemVisualizer;
+
     private void OnValidate()
     {
         if (building)

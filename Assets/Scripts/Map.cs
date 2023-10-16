@@ -53,8 +53,8 @@ public class Map : NetworkBehaviour
             for (int j = 0; j < building.size.y; j++)
             {
                 Vector2 pos2 = pos + new Vector2(25, 25);
-                pos2.x += i;
-                pos2.y += j;
+                pos2.x -= i;
+                pos2.y -= j;
                 Building temp = map.GetValue(pos2);
                 if (temp != null)
                 {
@@ -81,7 +81,7 @@ public class Map : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void SpawnBuildingServerRpc(FixedString32Bytes spawn, Vector2 pos, Quaternion rotation)
     {
-        Building building = itemDictionary.Items[spawn].building;
+        Building building = ItemDictionary.Items[spawn].building;
         pos = pos.FloorToInt();
         pos.x += building.size.x / 2;
         pos.y += building.size.y / 2;
@@ -110,8 +110,8 @@ public class Map : NetworkBehaviour
             for (int j = 0; j < building.size.y; j++)
             {
                 pos2 = pos + new Vector2(25, 25);
-                pos2.x += i;
-                pos2.y += j;
+                pos2.x -= i;
+                pos2.y -= j;
                 map.SetValue(pos2, building);
             }
             
